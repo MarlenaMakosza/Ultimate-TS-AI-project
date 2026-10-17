@@ -42,9 +42,59 @@ tells the agents to use it when it is installed. More in
 
 ## Starting your own project
 
-`CHANGELOG.md` and the version in `package.json` describe releases of this template. In a project
-created from it, delete `CHANGELOG.md`, set `version` in `package.json` and in
-`.release-please-manifest.json` to `0.0.0`, and change `name` in `package.json`.
+Create your repository from this one: on GitHub with **Use this template**, or clone it, delete
+`.git` and run `git init`. Then go through this list. Each group fits in one commit, and
+`npm run validate:full` should pass after each.
+
+**1. Name and owner**
+
+- `package.json`: change `name`, and set `version` to `0.0.0`. Set the version in
+  `.release-please-manifest.json` to `0.0.0` too.
+- Delete `CHANGELOG.md`: it describes releases of the template. release-please starts a new one
+  with your first release.
+- `LICENSE`: put in your name and the year, or choose another license.
+- `.github/CODEOWNERS`: replace `@MarlenaMakosza` with your account.
+- `README.md`, `docs/index.md` and `docs/pl/index.md`: the title, the description, the
+  `git clone` URL and the link to the docs site.
+- `.vitepress/config.ts`: `title` and `description`.
+
+**2. Example code: replace it with your first feature**
+
+The examples are the patterns that the agents follow, so keep each one until your own code
+replaces it.
+
+- The greeting: `src/greet.ts`, `tests/unit/greet.test.ts`, `tests/e2e/features/greeting.feature`,
+  `tests/e2e/steps/app.steps.ts`, `docs/edge-cases/greeting.md` and the greeting in
+  `src/index.ts`. The roles, `AGENTS.md` and the docs name these files as style references:
+  `git grep -n greet` lists every place to update.
+- The database: the `users` table in `src/db/schema.ts`, the migrations in `drizzle/`,
+  `dev/db/seed.ts` and `tests/integration/db/users.test.ts`. Delete `drizzle/` and run
+  `npm run db:generate` once your schema is in place, so the first migration is yours.
+- `dev/logger-example.ts` and the `example:logger` script: delete them once you know the logger.
+- `.archgate/adrs/GEN-001-example.md`: delete it. Keep `ARCH-001` and `ARCH-002` for as long as
+  they hold.
+
+**3. Docs about the template**
+
+- `docs/architecture/`: the arc42 pages describe the template. Rewrite the introduction and goals,
+  the context, and the glossary for your project; keep the conventions and the decisions you
+  still follow. See [Architecture](./architecture/index.md) for which sections pay off.
+- Polish docs: if you do not need them, delete `docs/pl/` and the `pl` entry in `locales` in
+  `.vitepress/config.ts`.
+
+**4. Parts you may not need**
+
+- No database: delete `src/db/`, `dev/db/`, `drizzle/`, `drizzle.config.ts`, `docker-compose.yml`,
+  `tests/integration/` and `vitest.integration.config.ts`; the `db:*`, `seed:dev` and
+  `test:integration` scripts, and the database steps in `firstrun:dev`; the `integration` job in `.github/workflows/ci.yml`; `DATABASE_URL`
+  in `src/env.ts` and `.env.example`; and the Drizzle, postgres and Testcontainers packages. knip
+  then lists what is left over.
+- No AI agents: see [Removing the AI setup](./ai-workflow.md#removing-the-ai-setup).
+
+**5. Check**
+
+Run `npm run validate:full` and `npm run format:check`, then apply the
+[GitHub settings](#github-settings).
 
 ## Every day
 

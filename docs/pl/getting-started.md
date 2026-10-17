@@ -42,9 +42,57 @@ agentom z niego korzystać, gdy jest zainstalowany. Więcej w
 
 ## Własny projekt na bazie szablonu
 
-`CHANGELOG.md` i wersja w `package.json` opisują wydania tego szablonu. W projekcie utworzonym z
-szablonu usuń `CHANGELOG.md`, ustaw `version` w `package.json` i w `.release-please-manifest.json`
-na `0.0.0` i zmień `name` w `package.json`.
+Utwórz swoje repozytorium z tego: na GitHubie przyciskiem **Use this template** albo sklonuj je,
+usuń `.git` i uruchom `git init`. Potem przejdź tę listę. Każda grupa mieści się w jednym commicie,
+a po każdej `npm run validate:full` powinien przechodzić.
+
+**1. Nazwa i właściciel**
+
+- `package.json`: zmień `name` i ustaw `version` na `0.0.0`. W `.release-please-manifest.json` też
+  ustaw `0.0.0`.
+- Usuń `CHANGELOG.md`: opisuje wydania szablonu. release-please założy nowy przy twoim pierwszym
+  wydaniu.
+- `LICENSE`: wpisz swoje imię i nazwisko oraz rok albo wybierz inną licencję.
+- `.github/CODEOWNERS`: zamień `@MarlenaMakosza` na swoje konto.
+- `README.md`, `docs/index.md` i `docs/pl/index.md`: tytuł, opis, adres w `git clone` i link do
+  strony z dokumentacją.
+- `.vitepress/config.ts`: `title` i `description`.
+
+**2. Przykładowy kod: zastąp go swoją pierwszą funkcją**
+
+Przykłady to wzorce, według których pracują agenci, więc zostaw każdy, dopóki nie zastąpi go twój
+kod.
+
+- Powitanie: `src/greet.ts`, `tests/unit/greet.test.ts`, `tests/e2e/features/greeting.feature`,
+  `tests/e2e/steps/app.steps.ts`, `docs/edge-cases/greeting.md` i powitanie w `src/index.ts`.
+  Role, `AGENTS.md` i dokumentacja podają te pliki jako wzorce stylu: `git grep -n greet` pokazuje
+  wszystkie miejsca do poprawienia.
+- Baza danych: tabela `users` w `src/db/schema.ts`, migracje w `drizzle/`, `dev/db/seed.ts` i
+  `tests/integration/db/users.test.ts`. Gdy twój schemat będzie gotowy, usuń `drizzle/` i uruchom
+  `npm run db:generate`, żeby pierwsza migracja była twoja.
+- `dev/logger-example.ts` i skrypt `example:logger`: usuń je, gdy poznasz już logger.
+- `.archgate/adrs/GEN-001-example.md`: usuń go. `ARCH-001` i `ARCH-002` zostaw, dopóki obowiązują.
+
+**3. Dokumentacja o szablonie**
+
+- `docs/architecture/`: strony arc42 opisują szablon. Napisz od nowa wprowadzenie i cele, kontekst
+  i słownik dla swojego projektu; zostaw konwencje i decyzje, których nadal się trzymasz. Które
+  sekcje się opłacają, opisuje [Architektura](./architecture/index.md).
+- Polska dokumentacja: jeśli jej nie potrzebujesz, usuń `docs/pl/` i wpis `pl` w `locales` w
+  `.vitepress/config.ts`.
+
+**4. Części, których możesz nie potrzebować**
+
+- Bez bazy danych: usuń `src/db/`, `dev/db/`, `drizzle/`, `drizzle.config.ts`, `docker-compose.yml`,
+  `tests/integration/` i `vitest.integration.config.ts`; skrypty `db:*`, `seed:dev` i
+  `test:integration` oraz kroki bazy w `firstrun:dev`; job `integration` w `.github/workflows/ci.yml`; `DATABASE_URL` w `src/env.ts`
+  i `.env.example`; oraz paczki Drizzle, postgres i Testcontainers. knip pokaże potem, co zostało.
+- Bez agentów AI: zobacz [Usunięcie konfiguracji AI](./ai-workflow.md#usuniecie-konfiguracji-ai).
+
+**5. Sprawdzenie**
+
+Uruchom `npm run validate:full` i `npm run format:check`, a potem wprowadź
+[ustawienia GitHuba](#ustawienia-githuba).
 
 ## Na co dzień
 
