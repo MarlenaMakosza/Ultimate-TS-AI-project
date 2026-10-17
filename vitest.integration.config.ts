@@ -9,7 +9,11 @@ export default defineConfig({
     include: ['tests/integration/**/*.{test,spec}.ts'],
     clearMocks: true,
     // Same reason as in vitest.config.ts: importing src/env.ts validates the environment.
-    env: { DATABASE_URL: 'postgres://test:test@localhost:5432/test' },
+    env: {
+      DATABASE_URL: 'postgres://test:test@localhost:5432/test',
+      DOTENV_CONFIG_PATH: '.env.tests-load-no-file',
+      DOTENV_CONFIG_QUIET: 'true',
+    },
     // Pulling the image and starting the container takes longer than a unit test may.
     hookTimeout: 120_000,
     testTimeout: 30_000,

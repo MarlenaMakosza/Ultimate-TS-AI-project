@@ -8,8 +8,13 @@ export default defineConfig({
     exclude: ['tests/integration/**', '**/node_modules/**'],
     clearMocks: true,
     // Modules that import src/env.ts validate the environment on import (ADR ARCH-001). Tests must
-    // not depend on a local .env, so they get a test database URL; tests can still stub it.
-    env: { DATABASE_URL: 'postgres://test:test@localhost:5432/test' },
+    // not depend on a local .env: DOTENV_CONFIG_PATH points dotenv at a file that does not exist,
+    // so it loads nothing, and the tests get a test database URL instead; they can still stub it.
+    env: {
+      DATABASE_URL: 'postgres://test:test@localhost:5432/test',
+      DOTENV_CONFIG_PATH: '.env.tests-load-no-file',
+      DOTENV_CONFIG_QUIET: 'true',
+    },
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],

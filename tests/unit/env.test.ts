@@ -18,6 +18,7 @@ describe('env', () => {
   it.each(['development', 'test', 'production'])('accepts NODE_ENV %s', async nodeEnvironment => {
     expect.assertions(1);
     vi.stubEnv('NODE_ENV', nodeEnvironment);
+    vi.stubEnv('LOG_LEVEL', undefined);
     vi.stubEnv('DATABASE_URL', validUrl);
 
     const { env } = await loadEnvironment();
@@ -41,6 +42,16 @@ describe('env', () => {
       expect(env.LOG_LEVEL).toBe(logLevel);
     },
   );
+
+  it('defaults LOG_LEVEL to info', async () => {
+    expect.assertions(1);
+    vi.stubEnv('LOG_LEVEL', undefined);
+    vi.stubEnv('DATABASE_URL', validUrl);
+
+    const { env } = await loadEnvironment();
+
+    expect(env.LOG_LEVEL).toBe('info');
+  });
 
   it('defaults NODE_ENV to development', async () => {
     expect.assertions(1);
